@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package twirpAPI;
+option go_package = "github.com/example/rpc/twirpAPI";
+
+service TwirpAPI {
+    rpc GetAlbums (GetAlbumsReq) returns (GetAlbumsResp) {}
+    rpc PostAlbums (PostAlbumsReq) returns (PostAlbumsResp) {}
+    rpc GetAlbumByID (GetAlbumByIDReq) returns (GetAlbumByIDResp) {}
+    rpc DeleteAlbumByID (DeleteAlbumByIDReq) returns (DeleteAlbumByIDResp) {}
+    rpc UpdateAlbumByID (UpdateAlbumByIDReq) returns (UpdateAlbumByIDResp) {}
+}
+
+message Empty {}
+
+message Album {
+  int32 id = 1;
+  string title = 2;
+  string artist = 3; 
+  int32 price = 4; 
+}
+
+message GetAlbumsReq {}
+
+
+message GetAlbumsResp{
+    repeated Album albums = 1;
+}
+
+message PostAlbumsReq{
+  string title = 1;
+  string artist = 2; 
+  int32 price = 3; 
+}
+
+message PostAlbumsResp{
+    Album album = 1;
+}
+
+message GetAlbumByIDReq{
+    int32 id = 1;
+}
+
+message GetAlbumByIDResp{
+    Album album = 1;
+}
+
+message DeleteAlbumByIDReq{
+    int32 id = 1;
+}
+
+message DeleteAlbumByIDResp{
+    bool success = 1;
+}
+
+message UpdateAlbumByIDReq{
+  int32 id = 1;
+  string title = 2;
+  string artist = 3; 
+  int32 price = 4; 
+}
+
+message UpdateAlbumByIDResp{
+    Album album = 1;
+}
