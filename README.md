@@ -4,12 +4,18 @@
 make proto
 ```
 
-## Run the server
+## Run the Server
 ```
 make run
 ```
 
-## Testing the endpoints
+## Run the Client
+```
+make client
+```
+
+
+## Testing the endpoints via JSON content-type
 
 ### GetAlbums
 ```
