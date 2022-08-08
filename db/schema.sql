@@ -1,0 +1,6 @@
+CREATE TABLE albums(
+	ID SERIAL PRIMARY KEY,
+	Title VARCHAR(255),
+	Artist VARCHAR(255),
+	Price Integer
+)
