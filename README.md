@@ -28,12 +28,15 @@ make client
 ```
 
 
-## Testing the endpoints via JSON content-type
+## Testing the endpoints
 
 
 ### Using Protobuf
 
-#### GetAlbums
+<details>
+<summary>
+GET Albums
+</summary>
 ```
 echo  \
     | protoc --encode twirpAPI.GetAlbumsReq ./rpc/twirpAPI/twirp.proto \
@@ -43,8 +46,12 @@ echo  \
       http://localhost:8080/twirp/twirpAPI.TwirpAPI/GetAlbums \
     | protoc --decode twirpAPI.GetAlbumsResp  ./rpc/twirpAPI/twirp.proto
 ```
+</details>
 
-#### GetAlbumByID
+<details>
+<summary>
+GetAlbumByID
+</summary>
 ```
 echo  'id:2' \
     | protoc --encode twirpAPI.GetAlbumByIDReq ./rpc/twirpAPI/twirp.proto \
@@ -54,8 +61,13 @@ echo  'id:2' \
       http://localhost:8080/twirp/twirpAPI.TwirpAPI/GetAlbumByID \
     | protoc --decode twirpAPI.GetAlbumByIDResp  ./rpc/twirpAPI/twirp.proto
 ```
+</details>
 
-#### Post Album
+
+<details>
+<summary>
+Post Album
+</summary>
 ```
 echo  'title:"Invinsible",artist:"Paul Oakenfold",price:19' \
     | protoc --encode twirpAPI.PostAlbumsReq ./rpc/twirpAPI/twirp.proto \
@@ -65,8 +77,12 @@ echo  'title:"Invinsible",artist:"Paul Oakenfold",price:19' \
       http://localhost:8080/twirp/twirpAPI.TwirpAPI/PostAlbums \
     | protoc --decode twirpAPI.PostAlbumsResp  ./rpc/twirpAPI/twirp.proto
 ```
+</details>
 
-#### Delete Album
+<details>
+<summary>
+Delete Album
+</summary>
 ```
 echo 'id:9' \
     | protoc --encode twirpAPI.DeleteAlbumByIDReq ./rpc/twirpAPI/twirp.proto \
@@ -76,8 +92,12 @@ echo 'id:9' \
       http://localhost:8080/twirp/twirpAPI.TwirpAPI/DeleteAlbumByID \
     | protoc --decode twirpAPI.DeleteAlbumByIDResp  ./rpc/twirpAPI/twirp.proto
 ```
+</details>
 
-#### Update Album By ID
+<details>
+<summary>
+Update Album By ID
+</summary>
 ```
 echo  'id:12,title:"Going Home",artist:"Drake",price:45' \
     | protoc --encode twirpAPI.UpdateAlbumByIDReq ./rpc/twirpAPI/twirp.proto \
@@ -87,48 +107,68 @@ echo  'id:12,title:"Going Home",artist:"Drake",price:45' \
       http://localhost:8080/twirp/twirpAPI.TwirpAPI/UpdateAlbumByID \
     | protoc --decode twirpAPI.UpdateAlbumByIDResp  ./rpc/twirpAPI/twirp.proto
 ```
-
+</details>
 
 ### Using JSON
 
 
-#### GetAlbums
+<details>
+<summary>
+GET Albums
+</summary>
 ```
 curl --request "POST" \
     --header "Content-Type: application/json" \
     --data '{}' \
     http://localhost:8080/twirp/twirpAPI.TwirpAPI/GetAlbums
 ```
+</details>
 
-
-#### GetAlbumByID
+<details>
+<summary>
+GET Album By ID
+</summary>
 ```
 curl --request "POST" \
     --header "Content-Type: application/json" \
     --data '{"id": "5"}' \
     http://localhost:8080/twirp/twirpAPI.TwirpAPI/GetAlbumByID
 ```
+</details>
 
-#### PostAlbums
+<details>
+<summary>
+POST an Album
+</summary>
+
 ```
 curl --request "POST" \
     --header "Content-Type: application/json" \
     --data '{"title": "Sunrise","artist": "Tiesto","price": 9}' \
     http://localhost:8080/twirp/twirpAPI.TwirpAPI/PostAlbums
 ```
+</details>
 
-#### DeleteAlbumByID
+<details>
+<summary>
+DELETE Album By ID
+</summary>
 ```
 curl --request "POST" \
     --header "Content-Type: application/json" \
     --data '{"id": "1"}' \
     http://localhost:8080/twirp/twirpAPI.TwirpAPI/DeleteAlbumByID
 ```
+</details>
 
-#### UpdateAlbumByID
+<details>
+<summary>
+UPDATE Album By ID
+</summary>
 ```
 curl --request "POST" \
     --header "Content-Type: application/json" \
     --data '{"id": "5", "title": "Legend","artist": "Sidhu Moosewala","price": 79}' \
     http://localhost:8080/twirp/twirpAPI.TwirpAPI/UpdateAlbumByID
 ```
+</details>
