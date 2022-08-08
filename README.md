@@ -37,6 +37,7 @@ make client
 <summary>
 GET Albums
 </summary>
+
 ```
 echo  \
     | protoc --encode twirpAPI.GetAlbumsReq ./rpc/twirpAPI/twirp.proto \
@@ -52,6 +53,7 @@ echo  \
 <summary>
 GetAlbumByID
 </summary>
+
 ```
 echo  'id:2' \
     | protoc --encode twirpAPI.GetAlbumByIDReq ./rpc/twirpAPI/twirp.proto \
@@ -68,6 +70,7 @@ echo  'id:2' \
 <summary>
 Post Album
 </summary>
+
 ```
 echo  'title:"Invinsible",artist:"Paul Oakenfold",price:19' \
     | protoc --encode twirpAPI.PostAlbumsReq ./rpc/twirpAPI/twirp.proto \
@@ -83,6 +86,7 @@ echo  'title:"Invinsible",artist:"Paul Oakenfold",price:19' \
 <summary>
 Delete Album
 </summary>
+
 ```
 echo 'id:9' \
     | protoc --encode twirpAPI.DeleteAlbumByIDReq ./rpc/twirpAPI/twirp.proto \
@@ -98,6 +102,7 @@ echo 'id:9' \
 <summary>
 Update Album By ID
 </summary>
+
 ```
 echo  'id:12,title:"Going Home",artist:"Drake",price:45' \
     | protoc --encode twirpAPI.UpdateAlbumByIDReq ./rpc/twirpAPI/twirp.proto \
@@ -116,6 +121,7 @@ echo  'id:12,title:"Going Home",artist:"Drake",price:45' \
 <summary>
 GET Albums
 </summary>
+
 ```
 curl --request "POST" \
     --header "Content-Type: application/json" \
@@ -128,6 +134,7 @@ curl --request "POST" \
 <summary>
 GET Album By ID
 </summary>
+
 ```
 curl --request "POST" \
     --header "Content-Type: application/json" \
@@ -153,6 +160,7 @@ curl --request "POST" \
 <summary>
 DELETE Album By ID
 </summary>
+
 ```
 curl --request "POST" \
     --header "Content-Type: application/json" \
@@ -165,6 +173,7 @@ curl --request "POST" \
 <summary>
 UPDATE Album By ID
 </summary>
+
 ```
 curl --request "POST" \
     --header "Content-Type: application/json" \
