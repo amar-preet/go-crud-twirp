@@ -16,7 +16,7 @@ type Server struct {
 func (s *Server) GetAlbums(ctx context.Context, req *twirpAPI.GetAlbumsReq) (*twirpAPI.GetAlbumsResp, error) {
 	var albums []*twirpAPI.Album
 	queries := db.New(s.DB)
-	rows, err := queries.GetAlbums(ctx)
+	rows, err := queries.Get(ctx)
 	if err != nil {
 		return nil, twirp.WrapError(twirp.NewError(twirp.Internal, "something went wrong"), err)
 	}
@@ -38,7 +38,7 @@ func (s *Server) GetAlbums(ctx context.Context, req *twirpAPI.GetAlbumsReq) (*tw
 
 func (s *Server) DeleteAlbumByID(ctx context.Context, req *twirpAPI.DeleteAlbumByIDReq) (*twirpAPI.DeleteAlbumByIDResp, error) {
 	queries := db.New(s.DB)
-	err := queries.DeleteAlbumByID(ctx, int32(req.Id))
+	err := queries.DeleteByID(ctx, int32(req.Id))
 
 	if err != nil {
 		return nil, twirp.WrapError(twirp.NewError(twirp.Internal, "Error deleting an album"), err)
@@ -63,13 +63,13 @@ func (s *Server) GetAlbumByID(ctx context.Context, req *twirpAPI.GetAlbumByIDReq
 }
 
 func (s *Server) PostAlbums(ctx context.Context, req *twirpAPI.PostAlbumsReq) (*twirpAPI.PostAlbumsResp, error) {
-	a := db.PostAlbumsParams{
+	a := db.PostParams{
 		Title:  sql.NullString{String: req.Title, Valid: true},
 		Artist: sql.NullString{String: req.Artist, Valid: true},
 		Price:  sql.NullInt32{Int32: req.Price, Valid: true},
 	}
 	queries := db.New(s.DB)
-	id, err := queries.PostAlbums(ctx, a)
+	id, err := queries.Post(ctx, a)
 	if err != nil {
 		return nil, twirp.WrapError(twirp.NewError(twirp.Internal, "Error posting an album"), err)
 	}
@@ -80,7 +80,7 @@ func (s *Server) PostAlbums(ctx context.Context, req *twirpAPI.PostAlbumsReq) (*
 }
 
 func (s *Server) UpdateAlbumByID(ctx context.Context, req *twirpAPI.UpdateAlbumByIDReq) (*twirpAPI.UpdateAlbumByIDResp, error) {
-	a := db.UpdateAlbumByIDParams{
+	a := db.UpdateByIDParams{
 		ID:     req.Id,
 		Title:  sql.NullString{String: req.Title, Valid: true},
 		Artist: sql.NullString{String: req.Artist, Valid: true},
@@ -93,7 +93,7 @@ func (s *Server) UpdateAlbumByID(ctx context.Context, req *twirpAPI.UpdateAlbumB
 		return nil, twirp.WrapError(twirp.NewError(twirp.NotFound, "Error getting an album by ID"), err)
 	}
 
-	album, err := queries.UpdateAlbumByID(ctx, a)
+	album, err := queries.UpdateByID(ctx, a)
 
 	if err != nil {
 		return nil, twirp.WrapError(twirp.NewError(twirp.Internal, "Error updating an album"), err)
@@ -105,5 +105,5 @@ func (s *Server) UpdateAlbumByID(ctx context.Context, req *twirpAPI.UpdateAlbumB
 }
 
 func getAlbumByID(queries *db.Queries, ctx context.Context, id int32) (db.Album, error) {
-	return queries.GetAlbumByID(ctx, id)
+	return queries.GetByID(ctx, id)
 }

@@ -10,40 +10,22 @@ import (
 	"database/sql"
 )
 
-const deleteAlbumByID = `-- name: DeleteAlbumByID :exec
+const deleteByID = `-- name: DeleteByID :exec
 DELETE FROM albums
 WHERE id=$1
 `
 
-func (q *Queries) DeleteAlbumByID(ctx context.Context, id int32) error {
-	_, err := q.db.ExecContext(ctx, deleteAlbumByID, id)
+func (q *Queries) DeleteByID(ctx context.Context, id int32) error {
+	_, err := q.db.ExecContext(ctx, deleteByID, id)
 	return err
 }
 
-const getAlbumByID = `-- name: GetAlbumByID :one
-SELECT id, title, artist, price 
-FROM albums 
-WHERE id=$1
-`
-
-func (q *Queries) GetAlbumByID(ctx context.Context, id int32) (Album, error) {
-	row := q.db.QueryRowContext(ctx, getAlbumByID, id)
-	var i Album
-	err := row.Scan(
-		&i.ID,
-		&i.Title,
-		&i.Artist,
-		&i.Price,
-	)
-	return i, err
-}
-
-const getAlbums = `-- name: GetAlbums :many
+const get = `-- name: Get :many
 SELECT id, title, artist, price FROM albums
 `
 
-func (q *Queries) GetAlbums(ctx context.Context) ([]Album, error) {
-	rows, err := q.db.QueryContext(ctx, getAlbums)
+func (q *Queries) Get(ctx context.Context) ([]Album, error) {
+	rows, err := q.db.QueryContext(ctx, get)
 	if err != nil {
 		return nil, err
 	}
@@ -70,41 +52,59 @@ func (q *Queries) GetAlbums(ctx context.Context) ([]Album, error) {
 	return items, nil
 }
 
-const postAlbums = `-- name: PostAlbums :one
+const getByID = `-- name: GetByID :one
+SELECT id, title, artist, price 
+FROM albums 
+WHERE id=$1
+`
+
+func (q *Queries) GetByID(ctx context.Context, id int32) (Album, error) {
+	row := q.db.QueryRowContext(ctx, getByID, id)
+	var i Album
+	err := row.Scan(
+		&i.ID,
+		&i.Title,
+		&i.Artist,
+		&i.Price,
+	)
+	return i, err
+}
+
+const post = `-- name: Post :one
 INSERT INTO albums (title, artist, price)
 VALUES ($1, $2, $3)
 RETURNING id
 `
 
-type PostAlbumsParams struct {
+type PostParams struct {
 	Title  sql.NullString
 	Artist sql.NullString
 	Price  sql.NullInt32
 }
 
-func (q *Queries) PostAlbums(ctx context.Context, arg PostAlbumsParams) (int32, error) {
-	row := q.db.QueryRowContext(ctx, postAlbums, arg.Title, arg.Artist, arg.Price)
+func (q *Queries) Post(ctx context.Context, arg PostParams) (int32, error) {
+	row := q.db.QueryRowContext(ctx, post, arg.Title, arg.Artist, arg.Price)
 	var id int32
 	err := row.Scan(&id)
 	return id, err
 }
 
-const updateAlbumByID = `-- name: UpdateAlbumByID :one
+const updateByID = `-- name: UpdateByID :one
 UPDATE albums
 SET title = $2, artist = $3, price = $4 
 WHERE id=$1
 RETURNING id, title, artist, price
 `
 
-type UpdateAlbumByIDParams struct {
+type UpdateByIDParams struct {
 	ID     int32
 	Title  sql.NullString
 	Artist sql.NullString
 	Price  sql.NullInt32
 }
 
-func (q *Queries) UpdateAlbumByID(ctx context.Context, arg UpdateAlbumByIDParams) (Album, error) {
-	row := q.db.QueryRowContext(ctx, updateAlbumByID,
+func (q *Queries) UpdateByID(ctx context.Context, arg UpdateByIDParams) (Album, error) {
+	row := q.db.QueryRowContext(ctx, updateByID,
 		arg.ID,
 		arg.Title,
 		arg.Artist,

@@ -27,6 +27,5 @@ func ConnectDB() (*sql.DB, error) {
 		return &sql.DB{}, err
 	}
 
-	//db.AutoMigrate(&models.Album{})
 	return db, nil
 }
