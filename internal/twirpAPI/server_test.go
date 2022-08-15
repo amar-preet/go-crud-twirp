@@ -52,10 +52,11 @@ func TestGetAlbumsWithError(t *testing.T) {
 			mock.ExpectQuery("SELECT id, title, artist, price FROM albums").WillReturnError(e)
 
 			s := &Server{DB: db}
-			_, erre := s.GetAlbums(ctx, req)
+			res, erre := s.GetAlbums(ctx, req)
 
 			Convey("The error is of twirp error internal", func() {
 				So(erre.Error(), ShouldEqual, "twirp error internal: something went wrong")
+				So(res, ShouldBeNil)
 			})
 		})
 	})
