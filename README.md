@@ -19,7 +19,7 @@ make proto
 
 ## Run the Server
 ```
-make run
+make server
 ```
 
 ## Run the Client
